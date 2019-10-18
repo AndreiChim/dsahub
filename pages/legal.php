@@ -12,5 +12,5 @@
     § Rechtliche Anmerkungen
 </h1>
 <p>
-    In Bearbeitung
+    In Bearbeitung.
 </p>
