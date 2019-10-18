@@ -549,7 +549,7 @@ if(isset($_GET['query'])){
     $query_arr = array();
     $query_arr = unserialize(base64_decode($query));
     
-    $sql = 'SELECT lastname, firstname, person, section, year_in, year_out, country, city, occupation_type, occupation, telephone, description, contact_agree FROM alumni WHERE ';
+    $sql = 'SELECT alumn_id, lastname, firstname, person, section, year_in, year_out, country, city, occupation_type, occupation, telephone, description, contact_agree FROM alumni WHERE ';
     
     $k = 1;
     foreach($query_arr as $key=>$parameter){
@@ -582,7 +582,7 @@ if(isset($_GET['query'])){
     $search = $mysqli->prepare($sql.'ORDER BY '.$order_by.' LIMIT '.$limit.' OFFSET '.$offset);
     $search->execute();
     $search->store_result();
-    $search->bind_result($lastname, $firstname, $person, $section, $year_in, $year_out, $country, $city, $occupation_type, $occupation, $telephone, $description, $contact_agree);
+    $search->bind_result($alumn_id,$lastname, $firstname, $person, $section, $year_in, $year_out, $country, $city, $occupation_type, $occupation, $telephone, $description, $contact_agree);
 
     $nr = $page * $limit - $limit;
     ?>
