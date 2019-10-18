@@ -1,0 +1,28 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 22, 2015, 9:37:21 PM
+    Author     : Andrei
+*/
+
+body{ 
+    padding-top: 70px; 
+}
+footer{
+    padding-bottom: 20px;
+}
+.home_button{
+    min-height: 200px;
+    line-height: 180px;
+    border-radius: 20px;
+}
+.home_button h2 {
+    display: inline-block;
+    vertical-align: middle;
+}
+.hiddenRow{
+    padding: 0px;
+}
