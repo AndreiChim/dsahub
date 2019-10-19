@@ -19,7 +19,7 @@ else {
     echo "<div class='alert alert-danger'>Ungültiges Einwegpasswort</div>";
 }
 
-$query = $mysqli->prepare("SELECT email, timestamp FROM registration_requests WHERE token = ? LIMIT 1");
+$query = $mysqli->prepare("SELECT email, time_stamp FROM registration_requests WHERE token = ? LIMIT 1");
 $query->bind_param('s', $token);
 $query->execute();
 $query->store_result();
@@ -116,7 +116,7 @@ if ($query->num_rows == 1) {
     <?php
         // delete token so it can't be used again
         $query = $mysqli->prepare(
-            "DELETE FROM registration_requests WHERE email = ? AND token = ? AND timestamp = ?"
+            "DELETE FROM registration_requests WHERE email = ? AND token = ? AND time_stamp = ?"
         );
         $query->bind_param('sss', $email, $token, $timestamp);
         $query->execute();

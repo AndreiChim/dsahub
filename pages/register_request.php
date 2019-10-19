@@ -20,26 +20,54 @@ if(isset($_POST['requestsubmit'])){
     
     // Backup server-side validation
     if($requestemail && $requestagreement){
-        $token = sha1(uniqid($requestemail, true));
-        $timestamp = $_SERVER["REQUEST_TIME"];
-        
-        $tbl_name = 'registration_requests';
-        $query = "INSERT INTO $tbl_name (email, token, timestamp) VALUES('$requestemail', '$token', '$timestamp')";
-        $result = mysqli_query($mysqli, $query);
-        if($result){
-            $url = "alumni.host.winw.de/index.php?path=pages/activate&token=$token";
-            $message =
-            "Danke für Ihren Antrag. Bitte klicken Sie auf folgendes Link
+        $check_registered = $mysqli->prepare('SELECT * FROM members WHERE email = ?');
+        $email = $requestemail;
+        $check_registered->bind_param('s', $email);
+        $check_registered->execute();
+        $check_registered->store_result();
+
+        $check_token = $mysqli->prepare('SELECT * FROM registration_requests WHERE email = ? AND time_stamp > ?');
+        $email = $requestemail;
+        $timestamp_age_limit = $_SERVER['REQUEST_TIME'] - 86400;
+        $check_token->bind_param('si', $email, $timestamp_age_limit);
+        $check_token->execute();
+        $check_token->store_result();
+
+        if($check_registered->num_rows != 0){
+            echo "<div class='alert alert-warning'>Sie haben schon ein Konto bei uns! Falls Sie Ihr Passwort vergessen haben, können Sie es <a href='index.php?path=pages/pw_reset'>hier</a> zurücksetzen.</div>";
+        }
+        elseif($check_token->num_rows != 0){
+            echo "<div class='alert alert-warning'>Es existiert bereits ein aktives Einweglink für diese Emailadresse! Bitte überprüfen Sie Ihren Inbox sowie den Spam-Ordner.</div>";
+        }
+        else{
+            $token = sha1(uniqid($requestemail, true));
+            $timestamp = $_SERVER["REQUEST_TIME"];
+
+            $query = $mysqli->prepare('INSERT INTO registration_requests (email, token, time_stamp) VALUES(?, ?, ?)');
+            $query->bind_param('ssi', $requestemail, $token, $timestamp);
+            if($query->execute()){
+                $url = "alumni.host.winw.de/index.php?path=pages/activate&token=$token";
+                $message =
+                    "Hallo!
+                    
+Danke für Ihren Registrierungsantrag. Bitte klicken Sie auf folgendes Link
 
 $url
 
-um Ihren Konto zu aktivieren";
-            mail($requestemail, "Ihr DSA-Hub Konto", $message, "From: DSA Bukarest <alumni@host.winw.de>");
-            
-            echo "<div class='alert alert-success'>Die Daten wurden erfolgreich gespeichert. Sie werden in kürzester Zeit eine E-Mail bekommen!</div>";
-        }
-        else{
-            echo "<div class='alert alert-danger'>Ein Fehler ist eingetreten. Bitte kontaktieren Sie den <a href='mailto:andrei.bubeneck@yahoo.com'>Administrator!</a></div>";
+um Ihr Konto zu aktivieren. Dieses Link ist nur in den nächsten 24 Stunden aktiv.
+
+Falls Sie diesen Antrag nicht gestellt oder versehentlich gestellt haben, bitte ignorieren Sie diese Email.
+
+Mit freundlichen Grüßen
+
+Ihr DSA Team";
+                mail($requestemail, "Ihr DSA-Hub Konto", $message, "From: DSA Bukarest <alumni@host.winw.de>");
+
+                echo "<div class='alert alert-success'>Die Daten wurden erfolgreich gespeichert. Sie werden in kürzester Zeit eine E-Mail bekommen!</div>";
+            }
+            else{
+                echo "<div class='alert alert-danger'>Ein Fehler ist eingetreten. Bitte kontaktieren Sie den <a href='mailto:andrei.bubeneck@yahoo.com'>Administrator!</a></div>";
+            }
         }
     }
     else{

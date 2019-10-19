@@ -62,7 +62,13 @@ if (login_check($mysqli) == true) {
             <?php
                 if(isset($_GET['path'])){
                     $path = $_GET['path'];
-                    require_once $path.".php";
+                    $filename = $path.".php";
+                    if(is_readable($filename)){
+                        require_once $filename;
+                    }
+                    else{
+                        echo '<div class="alert alert-warning">Die abgerufene Seite existiert im Moment nicht. Falls dies ein Fehler sein könnte, bitte kontaktieren Sie uns über das <a href="http://alumni.host.winw.de/index.php?path=pages/contact">Kontaktformular</a>.</div>';
+                    }
                 }
                 else{
                     require_once 'pages/home.php';

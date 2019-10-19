@@ -43,7 +43,8 @@
                       <div class="form-group">
                         <label for="loginPassword" class="col-sm-2 col-sm-offset-1 control-label">Passwort</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" id="loginPassword" placeholder="Passwort" name="password">
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Passwort" name="password"><br>
+                            <p><a href="index.php?path=pages/pw_reset">Passwort vergessen...</a></p>
                         </div>
                       </div>
                 </td>
