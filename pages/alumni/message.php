@@ -152,7 +152,7 @@ elseif($type == 'person'){
                       <div class="checkbox">
                         <label>
                           <input type="checkbox" name="agreement" value="yes" required> Ich bin damit einverstanden, dass die Daten aus diesem Formular
-                          für unbegrenzte Zeit gespeichert werden. Sie werden nie an Dritte weitergegeben werden.
+                            in unserer Datenbank gespeichert werden. Sie werden nur an die angezeigten Empfänger weitergegeben.
                         </label>
                       </div>
                     </div>
