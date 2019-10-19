@@ -24,7 +24,7 @@ function getGroupSize($group_id){
 
 function sanitizeInput($input){
     global $mysqli;
-    $input = stripslashes($input);
+    $input = strip_tags($input);
     $input = mysqli_real_escape_string($mysqli, $input);
     return $input;
 }
