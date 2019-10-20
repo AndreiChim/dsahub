@@ -80,7 +80,7 @@ if($_SESSION['access'] != 'admin'){
         </div>
         <div class='col-sm-6'>
             <h3>
-                Mailingsystem
+                Alumni-Registrierungsanträge
             </h3>
             <p>
                 In Bearbeitung

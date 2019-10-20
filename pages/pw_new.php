@@ -59,6 +59,12 @@ if ($query->num_rows == 1) {
                           </div>
                             <input type="hidden" name="username" value="<?php echo $email; ?>" />
                             <input type="hidden" name="email" value="<?php echo $email; ?>" />
+                            <input type="hidden" name="lastname" value="<?php echo $email; ?>" />
+                            <input type="hidden" name="firstname" value="<?php echo $email; ?>" />
+                            <input type="hidden" name="person" value="<?php echo $email; ?>" />
+                            <input type="hidden" name="pw_update" value="TRUE" />
+                            <input type="hidden" name="token" value="<?php echo $token; ?>" />
+                            <input type="hidden" name="timestamp" value="<?php echo $timestamp; ?>" />
                     </td>
                 </tr>
                 <tr>
@@ -66,8 +72,14 @@ if ($query->num_rows == 1) {
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-10">
                                 <button type="submit" class="btn btn-primary" value="Register"
-                                   onclick="return newpwdformhash(this.form,
-                                   this.form.password, this.form.confirmpwd);">Änderung speichern</button>
+                                   onclick="return regformhash(this.form,
+                                   this.form.username,
+                                   this.form.lastname,
+                                   this.form.firstname,
+                                   this.form.person,
+                                   this.form.email,
+                                   this.form.password,
+                                   this.form.confirmpwd);">Änderung speichern</button>
                             </div>
                           </div>
                         </form>
@@ -76,12 +88,6 @@ if ($query->num_rows == 1) {
             </table>
         </div>
     <?php
-        // delete token so it can't be used again
-        $query = $mysqli->prepare(
-            "DELETE FROM pw_reset_requests WHERE email = ? AND token = ? AND time_stamp = ?"
-        );
-        $query->bind_param('sss', $email, $token, $timestamp);
-        $query->execute();
     }
 }
 else{
